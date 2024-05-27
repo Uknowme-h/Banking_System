@@ -79,15 +79,6 @@ public class GUI extends JFrame {
                 
                 model.setRowCount(0);
                 
-//                for (Account account : globalAccounts) {
-//                    model.addRow(new Object[]{
-//                        account.getFirstName(),
-//                        account.getLastName(),
-//                        account.getAccountNumber(),
-//                        account.getBalance()
-//                    });
-//                   
-//                }
                 		StringBuilder sb = new StringBuilder();
                 try (
                 	  
@@ -99,7 +90,7 @@ public class GUI extends JFrame {
                                   account.getAccountNumber(),
                                   account.getBalance()
                               });
-                	   // System.out.print(account.getFirstName() + "," + account.getLastName() + "," + account.getAccountNumber() + "," + account.getBalance() + "\n");
+            
                 	    sb.append(account.getFirstName()).append(",").append(account.getLastName())
                 	    .append(",").append(account.getAccountNumber()).append(",").append(account.getBalance()).append("\n");
                 	    bw.write(sb.toString());
@@ -210,6 +201,7 @@ public class GUI extends JFrame {
         			Boolean found = true;
                     String accountNumber = textField.getText();
                     int amount = Integer.parseInt(deposit_amount.getText());
+                    if(amount>0) {
                     for (Account account : globalAccounts) {
                         if (Integer.toString(account.accountNumber).equals(accountNumber)) {
                         	found = true;
@@ -220,7 +212,10 @@ public class GUI extends JFrame {
                         }else {
                         	found = false;
                         }
+                    }}else {
+                    	JOptionPane.showMessageDialog(frame, "Amount cannot be a Negative Number!");
                     }
+                    
                     if(!found) {
                   	  JOptionPane.showMessageDialog(frame, "Account Doesnt exist!");
                     }
@@ -239,6 +234,7 @@ public class GUI extends JFrame {
         		  Boolean found = true;
                   String accountNumber = textField.getText();
                   int amount = Integer.parseInt(deposit_amount.getText());
+                  if(amount>0) {
                   for (Account account : globalAccounts) {
                       if (Integer.toString(account.accountNumber).equals(accountNumber)) {
                     	  found = true;
@@ -253,6 +249,9 @@ public class GUI extends JFrame {
                       }else {
                     	  found = false;
                       }
+                  }
+                  }else {
+                	  JOptionPane.showMessageDialog(frame, "Amount cannot be Negative!");
                   }
                   
                   if(!found) {
@@ -310,7 +309,7 @@ public class GUI extends JFrame {
         		    if(!f1 || !f2) {
         		    	JOptionPane.showMessageDialog(frame, "Account Doesnt Exist!");
         		    }
-        		    if (fromAccount != null && toAccount != null) {
+        		    if (fromAccount != null && toAccount != null && amount>0) {
         		    	if(fromAccount.getBalance() >= amount) {
         		    		Transaction.transfer(fromAccount, toAccount, amount);
         		    		mntmNewMenuItem.doClick();
@@ -319,6 +318,8 @@ public class GUI extends JFrame {
         		    	}else {
         		    		JOptionPane.showMessageDialog(frame,"Insufficient Balance!");
         		    	}
+        		    }else {
+        		    	JOptionPane.showMessageDialog(frame, "Amount cannot be Negative!");
         		    }
         		} catch (Exception e3) {
         		    JOptionPane.showMessageDialog(frame,"Invalid input for transfer amount or account number");
