@@ -13,8 +13,9 @@ public class Main {
         LinkedList<String> Lname = new LinkedList<>(readAccounts.getLastNames());
         LinkedList<Integer> account = new LinkedList<>(readAccounts.getAccounts());
         LinkedList<Integer> balance = new LinkedList<>(readAccounts.getBalance());
+        LinkedList<String> secret = new LinkedList<>(readAccounts.getsecret());
         for (int i = 0; i < readAccounts.firstNames.size(); i++) {
-            accounts.add(new Account(fname.get(i), Lname.get(i), account.get(i), balance.get(i)));
+            accounts.add(new Account(fname.get(i), Lname.get(i), account.get(i), balance.get(i) , secret.get(i)));
         }
      
         EventQueue.invokeLater(new Runnable() {

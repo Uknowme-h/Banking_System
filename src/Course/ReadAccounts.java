@@ -11,6 +11,7 @@ public class ReadAccounts {
     List<String> lastNames = new ArrayList<>();
     List<Integer> accountList = new ArrayList<>();
     List<Integer> balanceList = new ArrayList<>();
+    List<String> secretkey = new ArrayList();
 
     ReadAccounts(String filename) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -21,10 +22,17 @@ public class ReadAccounts {
                 lastNames.add(values[1]);
                 accountList.add(Integer.parseInt(values[2]));
                 balanceList.add((int)Double.parseDouble(values[3]));
+                secretkey.add(values[4]);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+    }
+    
+    
+    List<String>getsecret(){
+    	return secretkey;
     }
     
     List<String> getFirstNames(){

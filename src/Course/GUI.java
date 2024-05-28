@@ -16,6 +16,7 @@ import java.awt.Font;
 import java.util.LinkedList;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
+import java.io.Console;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
@@ -25,6 +26,8 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JPasswordField;
 
 
 public class GUI extends JFrame {
@@ -50,6 +53,8 @@ public class GUI extends JFrame {
 	private JTable table;
     private JScrollPane scrollPane;
     private JLabel Account_details;
+    private JPasswordField passwordField;
+    private JTextArea acc_name;
 	
 
 
@@ -62,6 +67,7 @@ public class GUI extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(new Color(0, 0, 0));
         setJMenuBar(menuBar);
+        menuBar.setVisible(false);
         
         JMenu mnNewMenu = new JMenu("Home");
         mnNewMenu.setIcon(null);
@@ -92,7 +98,7 @@ public class GUI extends JFrame {
                               });
             
                 	    sb.append(account.getFirstName()).append(",").append(account.getLastName())
-                	    .append(",").append(account.getAccountNumber()).append(",").append(account.getBalance()).append("\n");
+                	    .append(",").append(account.getAccountNumber()).append(",").append(account.getBalance()).append(",").append(account.getkey()).append("\n");
                 	    bw.write(sb.toString());
                 	    sb.setLength(0);
                 	    
@@ -115,9 +121,9 @@ public class GUI extends JFrame {
         JMenuItem mntmNewMenuItem_1 = new JMenuItem("Withdraw");
         mntmNewMenuItem_1.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		textField.setVisible(true);
-        		Account_deposit.setVisible(true);
-        		Account_deposit.setText("Enter the Account to withdraw from:");
+        		textField.setVisible(false);
+        		Account_deposit.setVisible(false);
+        		Account_deposit.setText("");
         		deposit_amount_label.setVisible(true);
         		deposit_amount_label.setText("Enter the amount to withdraw :");
         		Deposit.setVisible(false);
@@ -143,9 +149,9 @@ public class GUI extends JFrame {
         JMenuItem mntmNewMenuItem_2 = new JMenuItem("Deposit");
         mntmNewMenuItem_2.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		textField.setVisible(true);
+        		textField.setVisible(false);
         		Account_deposit.setVisible(true);
-        		Account_deposit.setText("Enter the account to deposit in :");
+        		Account_deposit.setText("");
         		deposit_amount_label.setVisible(true);
         		deposit_amount_label.setText("Enter the amount to deposit :");
         		Deposit.setVisible(true);
@@ -178,11 +184,11 @@ public class GUI extends JFrame {
         		Account_deposit.setVisible(false);
         		
         		//Transfer section 
-        		Acc_1.setVisible(true);
+        		Acc_1.setVisible(false);
         		Acc_2.setVisible(true);
         		Transfer_amount.setVisible(true);
         		Acc_2_text.setVisible(true);
-        		Acc_1_text.setVisible(true);
+        		Acc_1_text.setVisible(false);
         		Transfer_btn.setVisible(true);
         		Transfer_text.setVisible(true);
         	}
@@ -199,7 +205,7 @@ public class GUI extends JFrame {
         	public void actionPerformed(ActionEvent e) {
         		try {
         			Boolean found = true;
-                    String accountNumber = textField.getText();
+                    String accountNumber = acc_name.getText();
                     int amount = Integer.parseInt(deposit_amount.getText());
                     if(amount>0) {
                     for (Account account : globalAccounts) {
@@ -232,7 +238,7 @@ public class GUI extends JFrame {
         	public void actionPerformed(ActionEvent e) {
         		try {
         		  Boolean found = true;
-                  String accountNumber = textField.getText();
+                  String accountNumber = acc_name.getText();
                   int amount = Integer.parseInt(deposit_amount.getText());
                   if(amount>0) {
                   for (Account account : globalAccounts) {
@@ -286,7 +292,7 @@ public class GUI extends JFrame {
         Transfer_btn.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		try {
-        		    String fromAccountNumber = Acc_1_text.getText();
+        		    String fromAccountNumber = acc_name.getText();
         		    String toAccountNumber = Acc_2_text.getText();
         		    String amountText = Transfer_text.getText();
         		    if(fromAccountNumber.trim().isEmpty() || toAccountNumber.trim().isEmpty() || amountText.trim().isEmpty()) {
@@ -332,14 +338,69 @@ public class GUI extends JFrame {
         scrollPane = new JScrollPane(table);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
-        scrollPane.setBounds(10, 347, 591, 111);
+        scrollPane.setBounds(46, 464, 591, 111);
         scrollPane.setVisible(false);
         
         
         Account_details = new JLabel("Account Details :");
         Account_details.setFont(new Font("Tahoma", Font.PLAIN, 17));
-        Account_details.setBounds(10, 302, 182, 35);
+        Account_details.setBounds(46, 429, 182, 35);
         Account_details.setVisible(false);
+        
+        JLabel pass_label = new JLabel("Password");
+        pass_label.setFont(new Font("Tahoma", Font.BOLD, 19));
+        pass_label.setBounds(491, 307, 105, 22);
+        contentPane.add(pass_label);
+        
+        JLabel acc_label = new JLabel("Account");
+        acc_label.setFont(new Font("Tahoma", Font.BOLD, 19));
+        acc_label.setBounds(491, 247, 100, 28);
+        contentPane.add(acc_label);
+        
+        passwordField = new JPasswordField();
+        passwordField.setBounds(630, 305, 116, 24);
+        contentPane.add(passwordField);
+        
+        acc_name = new JTextArea();
+        acc_name.setBounds(630, 251, 116, 24);
+        contentPane.add(acc_name);
+        
+        JButton Login_btn = new JButton("Login");
+        Login_btn.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		int accnumber = Integer.parseInt(acc_name.getText());
+				char[] pass = passwordField.getPassword();
+				Boolean accExist = false;
+				for(Account account : globalAccounts) {
+					if(account.getAccountNumber() == accnumber) {
+						accExist = true;
+						System.out.print("account number matches!");
+						
+						if(String.valueOf(pass).equals(account.getkey())) {
+							JOptionPane.showMessageDialog(frame, "Login Sucessful!");
+							menuBar.setVisible(true);
+							pass_label.setVisible(false);
+							acc_label.setVisible(false);
+							passwordField.setVisible(false);
+							acc_name.setVisible(false);
+							mntmNewMenuItem.doClick();
+							Login_btn.setVisible(false);
+							
+						}else {
+							JOptionPane.showMessageDialog(frame, "Password is incorrect!");
+						}
+					}
+				}
+				
+				if(!accExist) {
+					JOptionPane.showMessageDialog(frame, "Account Doesnt exist!");
+				}
+        		
+        		
+        	}
+        });
+        Login_btn.setBounds(646, 352, 100, 35);
+        contentPane.add(Login_btn);
         contentPane.add(Account_details);
         contentPane.add(scrollPane);
         
@@ -353,7 +414,7 @@ public class GUI extends JFrame {
         contentPane.add(Transfer_btn);
         contentPane.add(Acc_2_text);
         Acc_2_text.setColumns(10);
-        mntmNewMenuItem.doClick();
+//        mntmNewMenuItem.doClick();
         
         Acc_1_text = new JTextField();
         Acc_1_text.setBounds(630, 200, 246, 29);
@@ -405,8 +466,9 @@ public class GUI extends JFrame {
         
         Account_list = new JLabel("");
         Account_list.setFont(new Font("Tahoma", Font.BOLD, 15));
-        Account_list.setBounds(10, 212, 309, 183);
+        Account_list.setBounds(10, 302, 200, 42);
         contentPane.add(Account_list);
+        
         
         
         JLabel lblNewLabel_2 = new JLabel("Banking Application");
@@ -420,9 +482,9 @@ public class GUI extends JFrame {
         lblNewLabel_1.setBounds(43, 97, 418, 75);
         contentPane.add(lblNewLabel_1);
         
-        JLabel lblNewLabel = new JLabel("");
-        lblNewLabel.setIcon(new ImageIcon("BgImage.jpg"));
-        lblNewLabel.setBounds(0, 0, 1261, 691);
-        contentPane.add(lblNewLabel);
+        JLabel login_button = new JLabel("");
+        login_button.setIcon(new ImageIcon("BgImage.jpg"));
+        login_button.setBounds(0, 0, 1261, 691);
+        contentPane.add(login_button);
     }
 }

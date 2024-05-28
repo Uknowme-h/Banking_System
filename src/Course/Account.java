@@ -3,11 +3,13 @@ package Course;
 public class Account extends Customer{
 	  int accountNumber;
 	    int balance;
+	    String key;
 
-	    Account(String FName, String LName, int accountNumber, int balance) {
+	    Account(String FName, String LName, int accountNumber, int balance ,String key) {
 	        super(FName, LName);
 	        this.accountNumber = accountNumber;
 	        this.balance = balance;
+	        this.key = key;
 	    }
 
 	    void deposit(int amount) {
@@ -23,6 +25,10 @@ public class Account extends Customer{
 	    }
 	    int getAccountNumber() {
 	        return this.accountNumber;
+	    }
+	    
+	    String getkey() {
+	    	return this.key;
 	    }
 
 	    double getBalance() {
