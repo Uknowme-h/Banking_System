@@ -347,6 +347,16 @@ public class GUI extends JFrame {
         Account_details.setBounds(46, 429, 182, 35);
         Account_details.setVisible(false);
         
+        JButton signup_btn = new JButton("Signup");
+        signup_btn.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		signup page = new signup();
+        		page.setVisible(true);
+        	}
+        });
+        signup_btn.setBounds(1156, 10, 85, 28);
+        contentPane.add(signup_btn);
+        
         JLabel pass_label = new JLabel("Password");
         pass_label.setFont(new Font("Tahoma", Font.BOLD, 19));
         pass_label.setBounds(491, 307, 105, 22);
